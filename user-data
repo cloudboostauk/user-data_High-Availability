@@ -5,6 +5,9 @@ yum install -y httpd.x86_64
 systemctl start httpd.service
 systemctl enable httpd.service
 
+# Enable SSI in Apache
+sed -i 's/#AddOutputFilter INCLUDES .shtml/AddOutputFilter INCLUDES .html/' /etc/httpd/conf/httpd.conf
+
 # Create the HTML file
 cat << 'EOF' > /var/www/html/index.html
 <!DOCTYPE html>
@@ -86,7 +89,7 @@ cat << 'EOF' > /var/www/html/index.html
     </header>
     <main>
         <div class="hostname">
-            Hello World from $(hostname -f)
+            Hello World from <!--#exec cmd="hostname -f" -->
         </div>
         <div class="refresh-instruction">
             <strong>Refresh the page several times to see the hostname change, demonstrating High Availability in action!</strong>
@@ -143,18 +146,11 @@ cat << 'EOF' > /var/www/html/index.html
         </div>
     </main>
     <footer>
-        <p>&copy; 2025 High Availability in Cloud Computing Demo | Cloudboosta Training</p>
+        <p>&copy; 2023 High Availability in Cloud Computing Demo | Cloudboosta Training</p>
     </footer>
 </body>
 </html>
 EOF
-
-# Make sure Apache can execute shell commands in HTML files
-echo "Options +ExecCGI" > /var/www/html/.htaccess
-echo "AddHandler cgi-script .html" >> /var/www/html/.htaccess
-
-# Change permissions to allow Apache to execute the script
-chmod 755 /var/www/html/index.html
 
 # Restart Apache to apply changes
 systemctl restart httpd.service
