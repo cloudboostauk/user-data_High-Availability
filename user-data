@@ -24,9 +24,8 @@ sed -i 's/Options Indexes FollowSymLinks/Options Indexes FollowSymLinks Includes
 # Remove default Apache test page
 rm -f /var/www/html/index.html /var/www/html/index.shtml
 
-
-# Create the HTML file
-cat << 'EOF' > /var/www/html/index.html
+# Create the HTML file with instance details
+cat << EOF > /var/www/html/index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -112,7 +111,7 @@ cat << 'EOF' > /var/www/html/index.html
             Private IP: $PRIVATE_IP
         </div>
         <div class="refresh-instruction">
-            <strong>Refresh the page several times to see the hostname change, demonstrating High Availability in action!</strong>
+            <strong>Refresh the page several times to see the Private IP change, demonstrating High Availability in action!</strong>
         </div>
         <div class="info">
             <div class="info-section">
